@@ -66,7 +66,7 @@ span.h1, span.h2, span.h3{
 }
 
 .h1.header{
-    display:none;
+    width:100%;
 }
 
 div.continueOptions{

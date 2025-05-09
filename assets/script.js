@@ -241,6 +241,8 @@ async function setupPageRender(list){
         i++
     }
 
+    document.getElementById('pageHeader').innerHTML = localStorage.getItem('pageHeader')
+
     return
 }
 

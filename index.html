@@ -15,15 +15,15 @@
                 <div>
                     <span class="h3">Write your page header below. For red, start with &lt;red> and end with &lt;/red></red></span>
                     <div style="display:flex;flex-flow:column;margin-top:10px;">
-                        <input type="text" oninput="this.parentElement.children[1].innerHTML = this.value" value="Used @ <red>Roncy</red>">
-                        <span class="h1">Used @ <red>Roncy</red></span>
+                        <input type="text" oninput="this.parentElement.children[1].innerHTML = this.value;localStorage.setItem('pageHeader', `${this.value}`)" value="Example <red>Header</red>">
+                        <span class="h1">Example <red>Header</red></span>
                     </div>
                 </div>
             </div>
             <div class="continueOptions" style="margin-bottom:10px;">
                 <span class="h2">Page Footer</span>
             </div>
-            <button>Print</button>
+            <button onclick="sendPrint()">Print</button>
         </div>
     </div>
     <div class="modal" id="prodsel">
