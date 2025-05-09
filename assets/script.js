@@ -1,4 +1,5 @@
 async function receivedData(json){
+    
 
     rows = json.rows
 
@@ -16,7 +17,45 @@ async function receivedData(json){
         i++
     }
 
-    setupPageRender(products)
+
+    document.getElementById('status').innerHTML = "Loaded "+products.length+" products. <span onclick='document.getElementById(`raw`).style.display = `block`;this.remove()' style='text-decoration:underline;'>View Raw</span>"
+
+    document.getElementById('raw').innerHTML = JSON.stringify(products)
+    window.localStorage.setItem('usedCache', JSON.stringify(products))
+
+    //setupPageRender(products)
+}
+
+async function printPage(){
+    await setupPageRender(JSON.parse(window.localStorage.getItem('toPrint')))
+
+    print()
+}
+
+async function printUsed(location){
+    if(!location){
+        return
+    }
+
+    products = await getUsed()
+
+    toPrint = []
+    i = 0
+    while(i<products.length){
+        if(products[i].location == location){
+            toPrint.push(products[i])
+        }
+        i++
+    }
+
+    window.localStorage.setItem('toPrint',JSON.stringify(toPrint))
+
+
+}
+
+async function sendPrint(){
+
+    window.open('./printpage.html');
 }
 
 async function priceFormat(price){
@@ -28,6 +67,132 @@ async function priceFormat(price){
     }
 
     return price
+}
+
+async function addItem(index){
+    csProducts = window.localStorage.getItem('csProducts') || '[]'
+
+    csProducts = JSON.parse(csProducts)
+
+    csProducts.push(index)
+    elem = document.getElementById('productSelector')
+    
+    elem.children[index].children[0].value = "Remove"
+
+    elem.children[index].children[0].setAttribute('onclick', `removeItem(${index})`)
+
+    window.localStorage.setItem('csProducts', JSON.stringify(csProducts))
+
+    products = await getUsed()
+    csString = document.getElementById('csProducts')
+    csString.innerHTML = ""
+
+    i = 0
+    while(i<csProducts.length){
+        newelm = document.createElement("span")
+        newelm.innerHTML = products[csProducts[i]].name
+
+        csString.appendChild(newelm)
+        i++
+    }
+
+    if(csProducts.length >3){
+        document.getElementById('manyProdNotice').style.display = "block"
+    }else{
+        document.getElementById('manyProdNotice').style.display = "none"
+    }
+}
+
+async function removeItem(index){
+    csProducts = window.localStorage.getItem('csProducts') || '[]'
+
+    csProducts = JSON.parse(csProducts)
+
+    i = 0
+    while(i<csProducts.length){
+        if(csProducts[i] == index){
+            csProducts.splice(i, 1)
+        }
+        i++
+    }
+    elem = document.getElementById('productSelector')
+    
+    elem.children[index].children[0].value = "Add"
+
+    elem.children[index].children[0].setAttribute('onclick', `addItem(${index})`)
+
+    window.localStorage.setItem('csProducts', JSON.stringify(csProducts))
+
+    products = await getUsed()
+    csString = document.getElementById('csProducts')
+    csString.innerHTML = ""
+
+    i = 0
+    while(i<csProducts.length){
+        newelm = document.createElement("span")
+        newelm.innerHTML = products[csProducts[i]].name
+
+        csString.appendChild(newelm)
+        i++
+    }
+
+    if(csProducts.length >3){
+        document.getElementById('manyProdNotice').style.display = "block"
+    }else{
+        document.getElementById('manyProdNotice').style.display = "none"
+    }
+}
+
+async function confirmSelectedItems(){
+    csProducts = window.localStorage.getItem('csProducts') || '[]'
+
+    csProducts = JSON.parse(csProducts)
+
+    products = await getUsed()
+    
+    toPrint = []
+    i = 0
+    while(i<csProducts.length){
+        toPrint.push(products[csProducts[i]])
+        i++
+    }
+
+    window.localStorage.setItem('toPrint', JSON.stringify(toPrint))
+
+    document.getElementById('prodsel').style.display = "none"
+
+    document.getElementById('printDetails').style.display = "flex"
+}
+
+async function setupProductSelector(){
+    products = await getUsed()
+    elem = document.getElementById('productSelector')
+
+    i = 0
+    while(i<products.length){
+        newdiv = document.createElement('div')
+
+        newcheckbox = document.createElement('input')
+
+        newcheckbox.setAttribute('type',"button")
+        newcheckbox.value = "Add"
+        newcheckbox.setAttribute("onclick", `addItem(${i})`)
+
+        newdiv.appendChild(newcheckbox)
+
+        newtitle = document.createElement('span')
+        newtitle.classList.add('h3')
+
+        newtitle.setAttribute('onclick',`this.parentElement.children[0].click()`)
+
+        newtitle.innerHTML = products[i].name + ` (${await priceFormat(products[i].price)}, ${products[i].location})`
+
+        newdiv.appendChild(newtitle)
+        elem.appendChild(newdiv)
+        i++
+    }
+
+    document.getElementById('prodsel').style.display = 'flex'
 }
 
 async function setupPageRender(list){
@@ -50,6 +215,13 @@ async function setupPageRender(list){
         
         newcontainer.appendChild(newinfocol)
 
+        //for location
+        newlocation = document.createElement("span")
+        newlocation.classList.add('h3')
+        newlocation.innerHTML = list[i].location
+
+        newinfocol.appendChild(newlocation)
+
         //for title
         newtitle = document.createElement("span")
         newtitle.classList.add('h2')
@@ -68,10 +240,13 @@ async function setupPageRender(list){
         listelem.appendChild(newcontainer)
         i++
     }
+
+    return
 }
 
 async function setOffsiteUsed(products){
     window.localStorage.setItem('usedCache', JSON.stringify(products))
+
 
     await setupPageRender(products)
 }
