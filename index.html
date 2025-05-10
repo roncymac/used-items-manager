@@ -9,6 +9,7 @@
 <body>
     <div class="modal" id="printDetails">
         <div style="display:flex;flex-flow:column;padding:40px;">
+            <button>Cancel</button>
             <span class="h1">Print Options</span>
             <div class="continueOptions" style="margin-bottom:10px;">
                 <span class="h2">Page Header</span>
@@ -32,6 +33,7 @@
     </div>
     <div class="modal" id="prodsel">
         <div style="display:flex;flex-flow:column;padding:40px;">
+            <button onclick="this.parentElement.parentElement.style.display = 'none';this.parentElement.children[3].children[2].innerHTML = '';this.parentElement.children[2].children[2].innerHTML = '';window.localStorage.removeItem('csProducts')">Cancel</button>
             <span class="h1">Product Selector</span>
             <div class="continueOptions" style="margin-bottom:10px;">
                 <span class="h2">Select the products to print</span>
