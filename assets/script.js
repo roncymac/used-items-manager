@@ -29,6 +29,8 @@ async function receivedData(json){
 async function printPage(){
     await setupPageRender(JSON.parse(window.localStorage.getItem('toPrint')))
 
+    
+
     print()
 }
 
@@ -49,11 +51,10 @@ async function printUsed(location){
     }
 
     window.localStorage.setItem('toPrint',JSON.stringify(toPrint))
-
-
 }
 
 async function sendPrint(){
+
 
     window.open('./printpage.html');
 }
@@ -147,6 +148,8 @@ async function confirmSelectedItems(){
     csProducts = window.localStorage.getItem('csProducts') || '[]'
 
     csProducts = JSON.parse(csProducts)
+
+    if(csProducts.length < 1)return alert("You must print at least 1 item.")
 
     products = await getUsed()
     
@@ -242,6 +245,20 @@ async function setupPageRender(list){
     }
 
     document.getElementById('pageHeader').innerHTML = localStorage.getItem('pageHeader')
+
+    if(window.localStorage.getItem("qrcodelink") != ""){
+        //
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+            text: window.localStorage.getItem("qrcodelink"),
+            width: 140,
+            height: 140,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        })
+    }
+
+    document.getElementById('footertext').innerHTML = localStorage.getItem('footertext')
 
     return
 }

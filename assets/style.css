@@ -10,6 +10,7 @@
     display:none;
     flex-flow:column;
     align-items: center;
+    z-index: 2;
 }
 
 span.h1, span.h2, span.h3{
@@ -32,6 +33,16 @@ span.h1, span.h2, span.h3{
 .h3{
     font-size:15px;
     font-weight: 700;
+}
+
+#footertext{
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    
+    font-style: normal;
+
+    font-size:20px;
+    font-weight: 500;
 }
 
 #productList{
@@ -63,6 +74,9 @@ span.h1, span.h2, span.h3{
     display:flex;
     flex-flow:row;
     align-items: center;
+    justify-content: center;
+    width:100%;
+    gap:30px;
 }
 
 .h1.header{

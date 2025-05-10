@@ -7,13 +7,13 @@
     <title>Used Manager</title>
 </head>
 <body>
-    <span class="h1 header" style="text-align: center;width:100%;" id="pageHeader"></span>
-    <div id="productList">
-
+    <span class="h1 header" style="text-align: center;width:100%;display:block;margin-bottom:30px;" id="pageHeader"></span>
+    <div id="productList"></div>
+    <div class="printInformation" style="margin-top:40px;">
+        <div id="qrcode"></div>
+        <span id="footertext"></span>
     </div>
-    <div class="printInformation">
-        <img src="" alt="">
-    </div>
+    <script src="./assets/qrcode.js"></script>
     <script src="./../assets/script.js"></script>
     <script>printPage()</script>
 </body>
