@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .priceList{
+            display:flex;
+            flex-flow:row;
+            flex-wrap: wrap;
+            gap:20px;
+        }
+        .priceList > div{
+            display:inline-flex;
+            border-radius:15px;
+            background-color: rgb(195, 0, 0);
+            color:white;
+            padding:10px 25px;
+
+            font-family: "Inter", sans-serif;
+            font-optical-sizing: auto;
+            
+            font-style: normal;
+
+            font-size:40px;
+            font-weight: 700;
+        }
+
+        body {
+            -webkit-print-color-adjust: exact !important;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div class="priceList" id="priceList">
+
+    </div>
+    <script>
+        rpce = document.getElementById('priceList')
+        async function printArray(array){
+
+            array = array.split(',')
+            i = 0
+            while(i<array.length){
+                newDiv = document.createElement('div')
+                newDiv.innerHTML = array[i]
+
+                rpce.appendChild(newDiv)
+                i++
+            }
+        }
+    </script>
+</body>
+</html>
