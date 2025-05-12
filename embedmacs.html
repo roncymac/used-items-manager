@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+        body{
+            font-family: "Raleway", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            font-size:1em;
+            line-height: 1em;
+            font-style: normal;
+            color:black;
+        }
+
+        .productContainer{
+            display:flex;
+            flex-flow:row;
+            align-items: center;
+            gap:30px;
+        }
+
+        #productList{
+            display:flex;
+            flex-flow:column;
+            gap:20px;
+        }
+
+        .infoCol{
+            display:flex;
+            flex-flow:column;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .productContainer{
+                display:flex;
+                flex-flow:column;
+                align-items: center;
+                gap:20px;
+            }
+
+            .infoCol{
+                width:80vw;
+                text-align: center;
+                gap:10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <span style="font-size:30px;margin:20px 0px;display:block;line-height: normal;">
+        Previously loved Macs
+    </span>
+    <div id="productList">
+        <span id="noproda">There are no products to display at this time.</span>
+    </div>
+    <span style="font-size:30px;margin:20px 0px;display:block;line-height: normal;">
+        Previously loved iPhones, iPads, Apple Watches
+    </span>
+    <div id="productbList">
+        <span id="noprodb">There are no products to display at this time.</span>
+    </div>
+    <script>
+        /*async function receivedData(json){
+    
+
+            rows = json.rows
+
+            products = []
+            
+            i = 0
+            while(i<rows.length){
+
+                if(rows[i].c[3].v != "Macs"){
+                    products.push({
+                        name:rows[i].c[0].v,
+                        price:rows[i].c[1].v,
+                        location:rows[i].c[2].v,
+                        category:rows[i].c[3].v,
+                        image:rows[i].c[4].v,
+                    })
+                }
+                i++
+            }
+
+            setupPageRender(products)
+        }*/
+
+        async function priceFormat(price){
+            price = parseInt(price)
+            if(Math.floor(price) != price){
+                price = `$${price}.00`
+            }else{
+                price = `$${price}`
+            }
+
+            return price
+        }
+
+        async function setupPageRender(list){
+            listelem = document.getElementById('productList')
+            i = 0
+            while(i<list.length){
+                newcontainer = document.createElement("div")
+                newcontainer.classList.add('productContainer')
+
+                //for img
+                newimg = document.createElement("img")
+                newimg.src = list[i].image
+                newimg.width = "275"
+
+                newcontainer.appendChild(newimg)
+
+                //new info col
+                newinfocol = document.createElement("div")
+                newinfocol.classList.add('infoCol')
+                
+                newcontainer.appendChild(newinfocol)
+
+                
+
+                //for title
+                newtitle = document.createElement("span")
+                newtitle.classList.add('h2')
+                newtitle.innerHTML = list[i].name
+
+                newinfocol.appendChild(newtitle)
+
+                //for location
+                newlocation = document.createElement("span")
+                newlocation.classList.add('h3')
+                newlocation.innerHTML = "Location: "+list[i].location
+
+                newinfocol.appendChild(newlocation)
+
+                //for price
+                newprice = document.createElement("span")
+                newprice.classList.add('h1')
+                newprice.style.color = "red"
+                newprice.innerHTML = "Now: "+await priceFormat(list[i].price)
+
+                newinfocol.appendChild(newprice)
+
+                //listelem.appendChild(newcontainer)
+
+                if(list[i].category == "Macs"){
+                    document.getElementById('noproda').style.display = 'none'
+                    document.getElementById('productList').appendChild(newcontainer)
+                }else{
+                    document.getElementById('noprodb').style.display = 'none'
+                    document.getElementById('productbList').appendChild(newcontainer)
+                }
+                i++
+            }
+        }
+
+        async function getOffsiteUsed(){
+            function reqListener(){
+                jsonString = this.responseText.match(/(?<="table":).*(?=}\);)/g)[0]
+
+                json = JSON.parse(jsonString)
+
+                rows = json.rows
+
+            products = []
+            
+            i = 0
+            while(i<rows.length){
+                    products.push({
+                        name:rows[i].c[0].v,
+                        price:rows[i].c[1].v,
+                        location:rows[i].c[2].v,
+                        category:rows[i].c[3].v,
+                        image:rows[i].c[4].v,
+                    })
+                
+                i++
+            }
+
+            setupPageRender(products)
+            }
+
+            id = '1B61irJjmPDixXwRg7jAiUGEiNT5KGEmS4cgjaKqo9Qk'
+
+            gid = '0'
+
+            url = "https://docs.google.com/spreadsheets/d/"+id+"/gviz/tq?tqx=out:json&tq&gid="+gid
+
+            oReq = new XMLHttpRequest()
+            oReq.onload = reqListener
+            
+            oReq.open("get", url, true)
+
+            try{
+                oReq.send()
+            }catch(err){
+                alert("An error occurred while fetching data, ",err)
+            }
+
+            return
+        }
+
+        getOffsiteUsed()
+    </script>
+</body>
+</html>

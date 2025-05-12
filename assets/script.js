@@ -12,7 +12,8 @@ async function receivedData(json){
             name:rows[i].c[0].v,
             price:rows[i].c[1].v,
             location:rows[i].c[2].v,
-            image:rows[i].c[3].v,
+            category:rows[i].c[3].v,
+            image:rows[i].c[4].v,
         })
         i++
     }
