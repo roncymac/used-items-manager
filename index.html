@@ -9,7 +9,7 @@
 <body>
     <div class="modal" id="printDetails">
         <div style="display:flex;flex-flow:column;padding:40px;">
-            <button>Cancel</button>
+            <button onclick="this.parentElement.parentElement.style.display = 'none';document.getElementById('prodsel').style.display = 'flex'">Back</button>
             <span class="h1">Print Options</span>
             <div class="continueOptions" style="margin-bottom:10px;">
                 <span class="h2">Page Header</span>
@@ -56,10 +56,10 @@
         <span id="status">Retrieving from database...</span>
         <textarea id="raw" style="resize:vertical;width:100%;"></textarea>
     </div>
-    <div class="continueOptions" style="margin-bottom:10px;">
+    <!--<div class="continueOptions" style="margin-bottom:10px;">
         <span class="h2">Demo device</span>
         <button>Enter slide view</button>
-    </div>
+    </div>-->
     <div class="continueOptions" style="margin-bottom:10px;">
         <span class="h2">Print page</span>
         <button onclick="setupProductSelector()">Select manually</button>
@@ -68,7 +68,7 @@
     </div>
     <div class="continueOptions">
         <span class="h2">Website</span>
-        <button onclick="location = './embed.html'">Enter website embed</button>
+        <button onclick="location = './embedmacs.html'">Enter website embed</button>
         <!--<button onclick="printUsed('Roncesvalles')">Roncy</button>
         <button onclick="printUsed('BeachMac')">Beach</button>-->
     </div>
