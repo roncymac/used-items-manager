@@ -62,7 +62,7 @@ async function sendPrint(){
 
 async function priceFormat(price){
     price = parseInt(price)
-    if(Math.floor(price) != price){
+    if(Math.floor(price) == price){
         price = `$${price}.00`
     }else{
         price = `$${price}`
@@ -70,6 +70,16 @@ async function priceFormat(price){
 
     return price
 }
+
+async function locationFormat(l){
+            if(l == "Roncesvalles"){
+                return `Ronces<red>valles</red>`
+            }else if(l == "BeachMac"){
+                return `Beach<red>Mac</red>`
+            }else{
+                return `Invalid Location`
+            }
+        }
 
 async function addItem(index){
     csProducts = window.localStorage.getItem('csProducts') || '[]'
@@ -222,7 +232,7 @@ async function setupPageRender(list){
         //for location
         newlocation = document.createElement("span")
         newlocation.classList.add('h3')
-        newlocation.innerHTML = list[i].location
+        newlocation.innerHTML = await locationFormat(list[i].location)
 
         newinfocol.appendChild(newlocation)
 

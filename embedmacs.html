@@ -21,18 +21,27 @@
             display:flex;
             flex-flow:row;
             align-items: center;
-            gap:30px;
+            gap:50px;
         }
 
         #productList{
             display:flex;
             flex-flow:column;
-            gap:20px;
+            gap:50px;
         }
 
         .infoCol{
             display:flex;
             flex-flow:column;
+        }
+
+        .infoCol > *{
+            font-size:22px;
+            line-height:132.5%;
+        }
+
+        red{
+            color: red;
         }
 
         @media only screen and (max-width: 600px) {
@@ -56,13 +65,13 @@
         Previously loved Macs
     </span>
     <div id="productList">
-        <span id="noproda">There are no products to display at this time.</span>
+        <span id="noproda">Check back soon!</span>
     </div>
     <span style="font-size:30px;margin:20px 0px;display:block;line-height: normal;">
         Previously loved iPhones, iPads, Apple Watches
     </span>
     <div id="productbList">
-        <span id="noprodb">There are no products to display at this time.</span>
+        <span id="noprodb">Check back soon!</span>
     </div>
     <script>
         /*async function receivedData(json){
@@ -92,13 +101,23 @@
 
         async function priceFormat(price){
             price = parseInt(price)
-            if(Math.floor(price) != price){
+            if(Math.floor(price) == price){
                 price = `$${price}.00`
             }else{
                 price = `$${price}`
             }
 
             return price
+        }
+
+        async function locationFormat(l){
+            if(l == "Roncesvalles"){
+                return `Ronces<red>valles</red>`
+            }else if(l == "BeachMac"){
+                return `Beach<red>Mac</red>`
+            }else{
+                return `Invalid Location`
+            }
         }
 
         async function setupPageRender(list){
@@ -133,15 +152,14 @@
                 //for location
                 newlocation = document.createElement("span")
                 newlocation.classList.add('h3')
-                newlocation.innerHTML = "Location: "+list[i].location
+                newlocation.innerHTML = "Location: "+await locationFormat(list[i].location)
 
                 newinfocol.appendChild(newlocation)
 
                 //for price
                 newprice = document.createElement("span")
                 newprice.classList.add('h1')
-                newprice.style.color = "red"
-                newprice.innerHTML = "Now: "+await priceFormat(list[i].price)
+                newprice.innerHTML = "Now: <red>"+await priceFormat(list[i].price)+"</red>"
 
                 newinfocol.appendChild(newprice)
 
